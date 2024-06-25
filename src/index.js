@@ -1,0 +1,30 @@
+import express from "express";
+import cors from "cors";
+import morgan from "morgan";
+import { PORT } from "./config/config.js";
+import "./db.js"
+import ProductRoutes from "./routes/product.Routes.js";
+
+const app = express();
+
+const corsOptions = {
+    origin: "*",
+    optionSucessStatus: 200
+}
+
+// EXPRESS.JSON() parsea toda la informacion que ingresa en JSON
+app.use(express.json());
+
+// CORS habilita otros dominios para comunicarse entre back y front
+app.use(cors(corsOptions));
+
+// MORGAN muestra las peticiones en consola y "dev" es un formato sencillo de muestra
+app.use(morgan("dev"));
+
+// Utilizamos la ruta y el controller de file "ProductRoutes"
+app.use(ProductRoutes);
+
+// LISTEN escucha en el Puerto asignado los cambios del servidor
+app.listen(PORT, async() =>{
+    console.log(`La app esta corriendo en ${PORT}`);    
+})
