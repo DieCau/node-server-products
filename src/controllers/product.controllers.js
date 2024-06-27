@@ -63,9 +63,10 @@ export const getById = async (req, res) => {
 // LISTAR *** Productos con opciones
 export const searchWithOptions = async (req, res) => {
   const { name, price, category } = req.query;
-  try {
-    //Buscar por category
-    // const products = await Product.find({category: category})
+  const priceSortQuery = price == "asc" ? 1 : -1; 
+  const searchQuery = {};
+
+  if (name) {        
     
     /* Buscar por name con una expresión regular 
     donde name es el parámetro que se evalua e "i" significa 
@@ -75,14 +76,34 @@ export const searchWithOptions = async (req, res) => {
     const partialMatchName = new RegExp(name, "i");
     
     /* name es el atributo que vamos a buscar 
-    regex es un objeto propio de MongoDB que 
+    $regex es un objeto propio de MongoDB que 
     proporciona capacidades de exp reg a partir de 
     cadenas de coincidencia de patrones en consultas */    
-    const products = await Product.find({name: {$regex: partialMatchName}})
+    searchQuery.name = { $regex: partialMatchName };
+  }
 
-    if (products) {
+  if (category) {
+    searchQuery.category = category;    
+  }
+
+  if (price == "disc") {
+    /* El operador $exists busca documentos 
+    que contengan o no un campo específico */
+    searchQuery.discountPercentage = { $exists: true };
+  }
+
+  try {
+    // Buscar por price (ascendente, descendente y descuento [asc, desc, disc]) 
+    // con la variable searchQuery  
+    const products = await Product.find(searchQuery).sort({
+      price: priceSortQuery,
+    });
+
+
+    if (products.length > 1) {
       return res.status(200).json(products);
     }
+
     return res.status(404).json({ message: "Producto No Encontrado" })
   } catch (error) {
     return res.status(500).json({ message: error.message });    
