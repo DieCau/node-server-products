@@ -63,8 +63,8 @@ export const getById = async (req, res) => {
 // LISTAR *** Productos con opciones
 export const searchWithOptions = async (req, res) => {
   const { name, price, category } = req.query;
-  const priceSortQuery = price == "asc" ? 1 : -1; 
-  const searchQuery = {};
+  const priceSortQuery = price == "asc" ? "asc" : "desc"; 
+  const searchQuery = { visible: true };
 
   if (name) {        
     
@@ -95,17 +95,39 @@ export const searchWithOptions = async (req, res) => {
   try {
     // Buscar por price (ascendente, descendente y descuento [asc, desc, disc]) 
     // con la variable searchQuery  
-    const products = await Product.find(searchQuery).sort({
+    const productsFound = await Product.find(searchQuery).sort({
       price: priceSortQuery,
     });
 
 
-    if (products.length > 1) {
-      return res.status(200).json(products);
+    if (productsFound.length >= 1) {
+      return res.status(200).json(productsFound);
     }
 
-    return res.status(404).json({ message: "Producto No Encontrado" })
+    return res
+    .status(404)
+    .json({ message: "Producto No Encontrado" });
+  
   } catch (error) {
     return res.status(500).json({ message: error.message });    
   }
 }
+
+
+// EDITAR 1 **** Producto por ID
+export const editProduct = async (req, res) => {
+  const { id } = req.params;
+  const payload = req.body;
+
+  try {
+    const product = await Product.findById(id);
+
+    if (product) {
+      await Product.findByIdAndUpdate(id, payload)
+      return res.status(200).json({ message: "Producto Modificado exitosamente" });
+    }
+    return res.status(404).json({ message: "Producto No Encontrado" })
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }  
+} 

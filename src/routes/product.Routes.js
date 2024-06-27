@@ -5,7 +5,8 @@ import {
     getProducts, 
     deleteById,
     getById,
-    searchWithOptions, 
+    searchWithOptions,
+    editProduct, 
 } from "../controllers/product.controllers.js";
 
 const router = Router();
@@ -22,8 +23,11 @@ router.delete("/product/:id", deleteById);
 // Ruta para Listar 1 Producto (GET)
 router.get("/product/:id", getById);
 
+// Ruta para buscar producto con opciones
+router.get("/products/search", searchWithOptions);
 
-router.get("/products/search", searchWithOptions)
+// Ruta para editar un atributo en particular
+router.patch("/product/:id", editProduct);
 
 export default router;
 // Este file debe importar en index.js
