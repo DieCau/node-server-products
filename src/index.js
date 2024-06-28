@@ -4,6 +4,7 @@ import morgan from "morgan";
 import { PORT } from "./config/config.js";
 import "./db.js"
 import ProductRoutes from "./routes/product.Routes.js";
+import UserRoutes from "./routes/user.Routes.js";
 
 const app = express();
 
@@ -23,6 +24,9 @@ app.use(morgan("dev"));
 
 // Utilizamos la ruta y el controller de file "ProductRoutes"
 app.use(ProductRoutes);
+
+// Utilizamos la ruta y el controller de file "UserRoutes"
+app.use(UserRoutes);
 
 // LISTEN escucha en el Puerto asignado los cambios del servidor
 app.listen(PORT, async() =>{
