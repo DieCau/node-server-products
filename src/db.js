@@ -1,4 +1,3 @@
-// Este archivo se debe importar en index.js
 import mongoose from "mongoose";
 import { CONNECTION_STRING } from "./config/config.js";
 
@@ -14,3 +13,4 @@ mongoose.connection.on("error", (error) => {
     console.log(error);    
 });
 
+// File se importa a index.js
