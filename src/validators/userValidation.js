@@ -23,7 +23,18 @@ const existEmailLogin = async (email) => {
   return true;
 };
 
+const checkPassword = async (req) => {
+  const { email, password } = req;
 
+  // Validaciones de email y password
+  const user = await User.findOne({ email: email });
+  const validPassword = await comparePassword(user.password, password);
+
+  // si NO es valido alguna de las 2 enviamos un mensaje de error
+  if (!validPassword) {
+    throw new Error(`El email o la contraseña son incorrectos`);
+  }
+};
 
 // Validaciones para el Usuario
 export const userValidations = {
@@ -48,8 +59,15 @@ export const loginValidations = {
     .not() // Negar la instruccion que sigue
     .isEmpty() // (NO) Esta vacio?
     .withMessage("Ingrese un email") // Mensaje ('Ingrese...)
-    .custom(existEmailLogin) // Funcion que se ejecuta al final
+    .custom(existEmailLogin), // Funcion que se ejecuta al final
 
+  // Se debe quitar el valor password asi la libreria recupere el 
+  // valor y no traiga todo el body, sino pasarle todo el body y checkPassword lo tome
+  password: body()
+    .not()
+    .isEmpty()
+    .withMessage("Ingrese una contraseña")
+    .custom(checkPassword),
 };
 
 // File que se importa en user.Routes.js
