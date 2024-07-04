@@ -10,7 +10,7 @@ export const signToken = (user) => {
       role: user.role,
     },
     SECRET,
-    { expiresIn: "1d" }
+    // { expiresIn: "1d" } // Tiempo de expiración
   );
 
   return token;

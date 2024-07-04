@@ -5,7 +5,17 @@ import Product from "../models/product.model.js";
 export const createProduct = async (req, res) => {
   const { name, price, discountPercentage, category, visible, image } =
     req.body;
+  
+  // Recuperamos el usuario completo
+  const { userToken } = req;
 
+  // Solo un "admin" puede crear, modificar o borrar
+  // Si es distinto o sea un "user" envia error(403) 
+  if (userToken.role != "admin") {
+    return res.status(403).json({error: "Acceso Denegado"})    
+  }
+
+  // Si sale todo bien, crea el Producto 
   try {
     const newProduct = await Product.create({
       name: name,
@@ -23,6 +33,15 @@ export const createProduct = async (req, res) => {
 
 //  LISTAR ***** todos los productos
 export const getProducts = async (req, res) => {
+  // Recuperamos el usuario completo
+  const { userToken } = req;
+
+  // Solo un "admin" puede crear, modificar o borrar
+  // Si es distinto o sea un "user" envia error(403)
+  if (userToken.role != "admin") {
+    return res.status(403).json({ error: "Acceso Denegado" });
+  }
+
   try {
     const products = await Product.find();
     res.status(200).json(products);
@@ -34,6 +53,16 @@ export const getProducts = async (req, res) => {
 // BORRAR **** Producto por ID
 export const deleteById = async (req, res) => {
   const { id } = req.params;
+  
+  // Recuperamos el usuario completo
+  const { userToken } = req;
+
+  // Solo un "admin" puede crear, modificar o borrar
+  // Si es distinto o sea un "user" envia error(403)
+  if (userToken.role != "admin") {
+    return res.status(403).json({ error: "Acceso Denegado" });
+  }
+
   try {
     const product = await Product.findById(id);
 
@@ -114,6 +143,15 @@ export const searchWithOptions = async (req, res) => {
 export const editProduct = async (req, res) => {
   const { id } = req.params;
   const payload = req.body;
+
+  // Recuperamos el usuario completo
+  const { userToken } = req;
+
+  // Solo un "admin" puede crear, modificar o borrar
+  // Si es distinto o sea un "user" envia error(403)
+  if (userToken.role != "admin") {
+    return res.status(403).json({ error: "Acceso Denegado" });
+  }
 
   try {
     const product = await Product.findById(id);
