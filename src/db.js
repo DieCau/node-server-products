@@ -6,7 +6,7 @@ mongoose.connect(CONNECTION_STRING);
 
 // AGREGAR 2 listened
 mongoose.connection.on("connected", () => {
-    console.log("Conectado a la Base de Datos de MongoDB");
+    console.log(">>>> MongoDB está conectado!");
 });
 
 mongoose.connection.on("error", (error) => {
@@ -14,3 +14,14 @@ mongoose.connection.on("error", (error) => {
 });
 
 // File se importa a index.js
+
+
+/* OTRA OPCION DE CONEXION 
+export const connectDB = async () => {
+    try{
+      await mongoose.connect("mongodb://localhost/<DB NAME>"); 
+    } catch (error){
+      console.log(error);  
+    }
+}
+*/

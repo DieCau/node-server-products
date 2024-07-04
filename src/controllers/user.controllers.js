@@ -6,8 +6,8 @@ export const createUser = async (req, res) => {
   const { email, password } = req.body;
   try {
     const newUser = User({
-      email: email,
-      password: password,
+      email,
+      password,
     });
     // El atributo "password" del nuevo user recibe el password hasheado
     newUser.password = await hashPassword(password);
@@ -24,11 +24,9 @@ export const login = async (req, res) => {
   const { email } = req.body;
 
   const user = await User.findOne({ email: email });
-  const token = signToken(user)
+  const token = signToken(user);
 
-  return res
-    .status(200)
-    .json({ token: token });
+  return res.status(200).json({ token: token });
 };
 
 //  LISTAR ***** todos los usuarios

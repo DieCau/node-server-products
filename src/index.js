@@ -13,7 +13,7 @@ const corsOptions = {
     optionSucessStatus: 200
 }
 
-// EXPRESS.JSON() parsea toda la informacion que ingresa en JSON
+// EXPRESS.JSON() convierte el req.body en formato JSON u objeto JS
 app.use(express.json());
 
 // CORS habilita otros dominios para comunicarse entre back y front
@@ -30,5 +30,5 @@ app.use(UserRoutes);
 
 // LISTEN escucha en el Puerto asignado los cambios del servidor
 app.listen(PORT, async() =>{
-    console.log(`La app esta corriendo en ${PORT}`);    
+    console.log(`Server corriendo en port ${PORT}`);    
 })

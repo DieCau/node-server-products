@@ -1,18 +1,21 @@
 // File para crear la ruta y el controller correspondiente
 import { Router } from "express";
-import { 
-    createProduct, 
-    getProducts, 
-    deleteById,
-    getById,
-    searchWithOptions,
-    editProduct, 
+import {
+  createProduct,
+  getProducts,
+  deleteById,
+  getById,
+  searchWithOptions,
+  editProduct,
 } from "../controllers/product.controllers.js";
+
+import { validateToken } from "../validators/validateToken.js";
 
 const router = Router();
 
 // Ruta para Crear un producto (POST)
-router.post("/product", createProduct);
+// Ademas agrego el "validateToken"
+router.post("/product", validateToken, createProduct);
 
 // Ruta para Listar todos los productos (GET)
 router.get("/products", getProducts);
