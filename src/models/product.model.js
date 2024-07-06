@@ -7,7 +7,7 @@ const productSchema = new Schema(
   {
     // Guarda el ID de un objeto 
     userId: {
-      type: ObjectId,
+      type: Schema.ObjectId,
     },
     //Declarar tipos de datos de un documento (registro)
     // Hacer validaciones

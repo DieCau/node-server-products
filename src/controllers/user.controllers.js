@@ -3,11 +3,12 @@ import { hashPassword } from "../helpers/hashPassword.js";
 import { signToken } from "../helpers/signToken.js";
 
 export const createUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, role } = req.body;
   try {
     const newUser = User({
       email,
       password,
+      role
     });
     // El atributo "password" del nuevo user recibe el password hasheado
     newUser.password = await hashPassword(password);
