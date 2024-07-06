@@ -151,15 +151,16 @@ export const editProduct = async (req, res) => {
   // Recuperamos el usuario completo
   const { userToken } = req;
 
-  // Solo un "admin" puede crear, modificar o borrar
-  // Si es distinto o sea un "user" envia error(403)
-  if (userToken.role != "admin") {
-    return res.status(403).json({ error: "Acceso Denegado" });
-  }
-
+  
   try {
     const product = await Product.findById(id);
-
+    
+    // Solo un "admin" puede crear, modificar o borrar
+    // Si es distinto o sea un "user" envia error(403)
+    if (userToken.id != product.userId || userToken.role != "admin") {
+      return res.status(403).json({ error: "Acceso Denegado" });
+    }
+ 
     if (product) {
       await Product.findByIdAndUpdate(id, payload);
       return res

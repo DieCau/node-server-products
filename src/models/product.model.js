@@ -22,7 +22,7 @@ const productSchema = new Schema(
       type: Number,
       required: [true, "Debe ingresar un Precio"],
       min: 1,
-      max: 5_000_000,
+      max: 20_000_000,
     },
     discountPercentage: {
       type: Number,
