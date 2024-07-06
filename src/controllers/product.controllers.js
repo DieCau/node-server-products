@@ -1,5 +1,6 @@
 // Controllers para utilizar con el modelo Product y ademas debe estar en el callback de la ruta correspondiente
 import Product from "../models/product.model.js";
+import User from "../models/user.model.js";
 
 // CREAR ***** un producto
 export const createProduct = async (req, res) => {
@@ -15,9 +16,12 @@ export const createProduct = async (req, res) => {
     return res.status(403).json({error: "Acceso Denegado"})    
   }
 
+  const userFound = await User.findById(userToken.id) 
+
   // Si sale todo bien, crea el Producto 
   try {
     const newProduct = await Product.create({
+      userId: userFound.id,
       name: name,
       price: price,
       discountPercentage: discountPercentage,
