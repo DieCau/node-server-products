@@ -7,6 +7,7 @@ import {
   getById,
   searchWithOptions,
   editProduct,
+  getAllMyProducts,
 } from "../controllers/product.controllers.js";
 
 import { validateToken } from "../validators/validateToken.js";
@@ -19,7 +20,7 @@ router.get("/product/:id", getById);
 // Ruta para buscar producto con opciones
 router.get("/products/search", searchWithOptions);
 
-// Ruta para Listar todos los productos (GET)
+// Ruta para LISTAR todos los productos (GET)
 // Agrego el "validateToken" antes del controlador
 router.get("/products", validateToken, getProducts);
 
@@ -34,6 +35,9 @@ router.delete("/product/:id", validateToken, deleteById);
 // Ruta para EDITAR un atributo en particular
 // Agrego el "validateToken" antes del controlador
 router.patch("/product/:id", validateToken, editProduct);
+
+// Ruta para LISTAR SOLO MIS PRODUCTOS como usuario
+router.get("/products/me", validateToken, getAllMyProducts);
 
 export default router;
 // Este file debe importar en index.js

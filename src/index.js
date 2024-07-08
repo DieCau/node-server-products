@@ -8,6 +8,9 @@ import UserRoutes from "./routes/user.Routes.js";
 
 const app = express();
 
+// Evita que esta descripcion aparezca en los Headers
+app.disable('x-powered-by');
+
 const corsOptions = {
     origin: "*",
     optionSucessStatus: 200
@@ -28,7 +31,13 @@ app.use(ProductRoutes);
 // Utilizamos la ruta y el controller de file "UserRoutes"
 app.use(UserRoutes);
 
+
 // LISTEN escucha en el Puerto asignado los cambios del servidor
 app.listen(PORT, async() =>{
     console.log(`Server corriendo en port ${PORT}`);    
 })
+
+//  El uso de 404
+// app.use((req, res) => {
+//     res.status(404).send('<h1>NOT FOUND 404!</h1>')
+// })

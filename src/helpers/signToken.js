@@ -1,10 +1,10 @@
-import Jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { SECRET } from "../config/config.js";
 
 export const signToken = (user) => {
   // Generar un token con los atributos [id y role] de un usuario
   // y lo guarda en la variable "token"
-  const token = Jwt.sign(
+  const token = jwt.sign(
     {
       id: user._id,
       role: user.role,

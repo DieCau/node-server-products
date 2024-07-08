@@ -6,19 +6,19 @@ import User from "../models/user.model.js";
 export const createProduct = async (req, res) => {
   const { name, price, discountPercentage, category, visible, image } =
     req.body;
-  
+
   // Recuperamos el usuario completo
   const { userToken } = req;
 
   // Solo un "admin" puede crear, modificar o borrar
-  // Si es distinto o sea un "user" envia error(403) 
+  // Si es distinto o sea un "user" envia error(403)
   if (userToken.role != "admin") {
-    return res.status(403).json({error: "Acceso Denegado"})    
+    return res.status(403).json({ error: "Acceso Denegado" });
   }
 
-  const userFound = await User.findById(userToken.id) 
+  const userFound = await User.findById(userToken.id);
 
-  // Si sale todo bien, crea el Producto 
+  // Si sale todo bien, crea el Producto
   try {
     const newProduct = await Product.create({
       userId: userFound.id,
@@ -57,7 +57,7 @@ export const getProducts = async (req, res) => {
 // BORRAR **** Producto por ID
 export const deleteById = async (req, res) => {
   const { id } = req.params;
-  
+
   // Recuperamos el usuario completo
   const { userToken } = req;
 
@@ -151,16 +151,15 @@ export const editProduct = async (req, res) => {
   // Recuperamos el usuario completo
   const { userToken } = req;
 
-  
   try {
     const product = await Product.findById(id);
-    
+
     // Solo un "admin" puede crear, modificar o borrar
     // Si es distinto o sea un "user" envia error(403)
     if (userToken.id != product.userId || userToken.role != "admin") {
       return res.status(403).json({ error: "Acceso Denegado" });
     }
- 
+
     if (product) {
       await Product.findByIdAndUpdate(id, payload);
       return res
@@ -171,4 +170,13 @@ export const editProduct = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
+};
+
+// LISTAR solo mis productos como usuario
+export const getAllMyProducts = async (req, res) => {
+  const { userToken } = req;
+  
+  const products = await Product.find({ userId: userToken.id });
+
+  res.status(200).json(products);
 };
