@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { SECRET } from "../config/config.js";
+import { SECRET, USER_KEY, ADMIN_KEY } from "../config/config.js";
 
 export const signToken = (user) => {
   // Generar un token con los atributos [id y role] de un usuario
@@ -9,9 +9,14 @@ export const signToken = (user) => {
       id: user._id,
       role: user.role,
     },
-    SECRET,
+    SECRET
     // { expiresIn: "1d" } // Tiempo de expiración
   );
 
-  return token;
+  const auth = {
+    token: token,
+    key: user.role == "admin" ? ADMIN_KEY : USER_KEY,
+  };
+
+  return auth;
 };

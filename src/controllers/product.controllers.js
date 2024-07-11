@@ -156,7 +156,7 @@ export const editProduct = async (req, res) => {
 
     // Solo un "admin" puede crear, modificar o borrar
     // Si es distinto o sea un "user" envia error(403)
-    if (userToken.id != product.userId || userToken.role != "admin") {
+    if (userToken.id != product.userId && userToken.role != "admin") {
       return res.status(403).json({ error: "Acceso Denegado" });
     }
 

@@ -11,3 +11,7 @@ export const CONNECTION_STRING = process.env.CONNECTION_STRING
 
 // Palabra que utilizamos para firmar un Token. Esta en el file ".env"
 export const SECRET = process.env.SECRET
+
+// Renderizado condicional para el NAV ya sea "admin" o "user"
+export const USER_KEY = process.env.USER_KEY
+export const ADMIN_KEY = process.env.USER_ADMIN
